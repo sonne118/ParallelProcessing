@@ -11,8 +11,9 @@ namespace TPL
     public sealed class ParallelProcessing<TKey, TValue>
     {
         private readonly ConcurrentDictionary<string, int> _cdic;
+        private List<KeyValuePair<string, int>> _list;
         private HashSet<Task> _asyncWaiters;
-        private List<KeyValuePair<string, int>> _list = null;
+        
 
         public ParallelProcessing()
         {
