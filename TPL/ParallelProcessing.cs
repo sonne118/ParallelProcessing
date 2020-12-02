@@ -13,7 +13,7 @@ namespace TPL
         private readonly ConcurrentDictionary<string, int> _cdic;
         private List<KeyValuePair<string, int>> _list;
         private HashSet<Task> _asyncWaiters;
-        
+
 
         public ParallelProcessing()
         {
@@ -81,8 +81,8 @@ namespace TPL
 
         public async Task MultipleTasks(IReader[] readers, IOutputWrite<string, int> output, CancellationToken cancellationToken)
         {
-            IReader reader = null;
-            _asyncWaiters = new HashSet<Task>();
+            IReader reader = null; _asyncWaiters = new HashSet<Task>();
+            Predicate<Task> p = delegate (Task t) { return t.IsCompleted == true || t.IsFaulted || t.IsCanceled; };
 
             for (int i = 0; i < readers.Length; i++)
             {
@@ -117,8 +117,8 @@ namespace TPL
             {
                 while (_asyncWaiters.Count > 0)
                 {
-                    _asyncWaiters.RemoveWhere(i => i.IsCompleted == true);
-                }                
+                    _asyncWaiters.RemoveWhere(p);
+                }
             }
 
             try
