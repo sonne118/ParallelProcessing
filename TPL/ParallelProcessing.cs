@@ -113,6 +113,13 @@ namespace TPL
                     Debug.WriteLine("{0}:\n   {1}", e.GetType().Name, e.Message);
                 }
             }
+            finally
+            {
+                while (_asyncWaiters.Count > 0)
+                {
+                    _asyncWaiters.RemoveWhere(i => i.IsCompleted == true);
+                }                
+            }
 
             try
             {
